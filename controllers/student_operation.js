@@ -6,7 +6,7 @@ const router = express.Router()
 const Student = require("../models/student")
 const Teacher = require("../models/teacher");
 const Router = require("./teacher_operations");
-
+const ObjectId = require('mongodb').ObjectID;
 
 async function CreateStudent(name, email, classroom, section, assingnedTeachername) {
 
@@ -14,19 +14,19 @@ async function CreateStudent(name, email, classroom, section, assingnedTeacherna
     var res = await Teacher.findOne({ name: assingnedTeachername })
 
     if (res) {
-        var id = res._id
+        var id = res._id.toString()
 
 
 
         const newStudent = {
             name: name,
             email: email,
-            classroom: classroom,
+            class: classroom,
             section: section,
             assingnedTeacher: id
         }
 
-        Student.find({ email: email }).then((res) => {
+        Student.findOne({ email: email }).then((res) => {
             if (!res) {
                 Student.create(newStudent)
                 console.log("User Created")
@@ -39,17 +39,17 @@ async function CreateStudent(name, email, classroom, section, assingnedTeacherna
     }
 }
 
-CreateStudent("Ankit", "ankit@gmail.com", 9, "D", "Robert Frost")
-CreateStudent("Amol", "amol@gmail.com", 8, "A", "Rabindranath")
-CreateStudent("Aashish", "aashish@gmail.com", 8, "C", "Hajime Isayama")
-CreateStudent("Riya", "riya@gmail.com", 9, "B", "Chester Bennington")
-CreateStudent("Pallavi", "pallavi@gmail.com", 9, "D", "Peter Thiel")
+// CreateStudent("Ankit", "ankit@gmail.com", 9, "D", "Robert Frost")
+// CreateStudent("Amol", "amol@gmail.com", 8, "A", "Rabindranath")
+// CreateStudent("Aashish", "aashish@gmail.com", 8, "C", "Hajime Isayama")
+// CreateStudent("Riya", "riya@gmail.com", 9, "B", "Chester Bennington")
+// CreateStudent("Pallavi", "pallavi@gmail.com", 9, "D", "Peter Thiel")
 
-CreateStudent("Karan", "karan@gmail.com", 9, "D", "Robert Frost")
-CreateStudent("Shubham", "shubham@gmail.com", 8, "A", "Rabindranath")
-CreateStudent("Pranshu", "pranshu@gmail.com", 8, "C", "Hajime Isayama")
-CreateStudent("Pranjal", "pranjal@gmail.com", 9, "B", "Chester Bennington")
-CreateStudent("Himanshi", "himanshi@gmail.com", 9, "D", "Peter Thiel")
+// CreateStudent("Karan", "karan@gmail.com", 9, "D", "Robert Frost")
+// CreateStudent("Shubham", "shubham@gmail.com", 8, "A", "Rabindranath")
+// CreateStudent("Pranshu", "pranshu@gmail.com", 8, "C", "Hajime Isayama")
+// CreateStudent("Pranjal", "pranjal@gmail.com", 9, "B", "Chester Bennington")
+// CreateStudent("Himanshi", "himanshi@gmail.com", 9, "D", "Peter Thiel")
 
 
 Router.get("/", (req, res, next) => {
@@ -64,9 +64,9 @@ Router.get("/", (req, res, next) => {
     }
 })
 
-Router.get("/subject/:class", (req, res, next) => {
+Router.get("/class/:class", (req, res, next) => {
     try {
-        Teacher.find({ subject: req.params.class })
+        Student.find({ class: req.params.class })
             .then((result) => {
                 res.status(200).json(result)
             })
@@ -76,9 +76,9 @@ Router.get("/subject/:class", (req, res, next) => {
     }
 })
 
-Router.get("/subject/:section", (req, res, next) => {
+Router.get("/section/:section", (req, res, next) => {
     try {
-        Teacher.find({ subject: req.params.section })
+        Student.find({ section: req.params.section })
             .then((result) => {
                 res.status(200).json(result)
             })
@@ -88,9 +88,22 @@ Router.get("/subject/:section", (req, res, next) => {
     }
 })
 
-Router.post("/class", (req, res, next) => {
+Router.post("/class/:name/:class", (req, res, next) => {
+
+    console.log(req.params)
+
     try {
-        Teacher.updateOne({ name: req.body.name }, { $set: { class: req.body.class } })
+        Student.updateOne({ name: req.params.name }, { $set: { class: req.params.class } })
+        res.status(200).json("Updated")
+    }
+    catch (err) {
+        res.status(500).json(err)
+    }
+})
+
+Router.post("/section/:name/section", (req, res, next) => {
+    try {
+        Student.updateOne({ name: req.params.name }, { $set: { section: req.params.section } })
         res.status(200).json("Updated")
     }
     catch (err) {
@@ -98,20 +111,10 @@ Router.post("/class", (req, res, next) => {
     }
 })
 
-Router.post("/section", (req, res, next) => {
-    try {
-        Teacher.updateOne({ name: req.body.name }, { $set: { section: req.body.section } })
-        res.status(200).json("Updated")
-    }
-    catch (err) {
-        res.json(200).json("Already Exists")
-    }
-})
 
-
-Router.post("/email", (req, res, next) => {
+Router.post("/email/:name/email", (req, res, next) => {
     try {
-        Teacher.updateOne({ name: req.body.name }, { $set: { email: req.body.email } })
+        Student.updateOne({ name: req.params.name }, { $set: { email: req.params.email } })
         res.status(200).json("Updated")
     }
     catch (err) {
@@ -120,14 +123,16 @@ Router.post("/email", (req, res, next) => {
 })
 
 Router.get("/teacher/:teacher_id", (req, res, next) => {
+
     try {
-        Teacher.find({ assignedTeacher: req.params.teacher_id })
+        Student.find({ assingnedTeacher: req.params.teacher_id })
             .then((result) => {
+
                 res.status(200).json(result)
             })
     }
     catch (err) {
-        res.status(500).json("Error Found")
+        res.status(500).json(err)
     }
 })
 module.exports = Router

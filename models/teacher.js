@@ -9,10 +9,9 @@ var TeacherSchema = new mongoose.Schema({
         type: "String",
         required: true
     },
-    class: {
-        type: "Number",
-        min: 8,
-        max: 9
+    subject: {
+        type: "String",
+
     }
 })
 

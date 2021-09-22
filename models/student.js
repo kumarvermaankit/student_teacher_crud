@@ -21,6 +21,10 @@ var StudentSchema = new mongoose.Schema({
         required: true
     },
     assingnedTeacher: {
-        type: ObjectId,
+        type: "String",
     }
 })
+
+var Student = mongoose.model("Student", StudentSchema)
+
+module.exports = Student;

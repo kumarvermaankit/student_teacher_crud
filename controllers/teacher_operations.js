@@ -4,13 +4,14 @@ const Router = express.Router()
 
 const Teacher = require("../models/teacher")
 
-function CreateTeacher(name, email, classroom) {
+function CreateTeacher(name, email, subject) {
     const newTeacher = {
         name: name,
         email: email,
-        classroom: classroom,
+        subject: subject,
     }
-    Teacher.find({ email: email }).then((res) => {
+    Teacher.findOne({ email: email }).then((res) => {
+
         if (!res) {
             Teacher.create(newTeacher)
             console.log("User added Successfully")
@@ -24,11 +25,11 @@ function CreateTeacher(name, email, classroom) {
 
 }
 
-CreateTeacher("Rabindranath", "rabindranath@gmail.com", 8)
-CreateTeacher("Robert Frost", "robertfrost@gmail.com", 9)
-CreateTeacher("Hajime Isayama", "isayama@gmail.com", 8)
-CreateTeacher("Peter Thiel", "thiel@gmail.com", 9)
-CreateTeacher("Chester Bennington", "chester@gmail.com", 9)
+CreateTeacher("Rabindranath", "rabindranath@gmail.com", "Hindi")
+CreateTeacher("Robert Frost", "robertfrost@gmail.com", "English")
+CreateTeacher("Hajime Isayama", "isayama@gmail.com", "Creativity")
+CreateTeacher("Peter Thiel", "thiel@gmail.com", "Entrepreneurship")
+CreateTeacher("Chester Bennington", "chester@gmail.com", "Singing")
 
 
 
