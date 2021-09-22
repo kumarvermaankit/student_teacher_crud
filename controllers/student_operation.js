@@ -1,12 +1,12 @@
 const express = require("express");
-const { model } = require("mongoose");
 
-const router = express.Router()
+
+const Router = express.Router()
 
 const Student = require("../models/student")
 const Teacher = require("../models/teacher");
-const Router = require("./teacher_operations");
-const ObjectId = require('mongodb').ObjectID;
+
+
 
 async function CreateStudent(name, email, classroom, section, assingnedTeachername) {
 
@@ -39,17 +39,17 @@ async function CreateStudent(name, email, classroom, section, assingnedTeacherna
     }
 }
 
-// CreateStudent("Ankit", "ankit@gmail.com", 9, "D", "Robert Frost")
-// CreateStudent("Amol", "amol@gmail.com", 8, "A", "Rabindranath")
-// CreateStudent("Aashish", "aashish@gmail.com", 8, "C", "Hajime Isayama")
-// CreateStudent("Riya", "riya@gmail.com", 9, "B", "Chester Bennington")
-// CreateStudent("Pallavi", "pallavi@gmail.com", 9, "D", "Peter Thiel")
+CreateStudent("Ankit", "ankit@gmail.com", 9, "D", "Robert Frost")
+CreateStudent("Amol", "amol@gmail.com", 8, "A", "Rabindranath")
+CreateStudent("Aashish", "aashish@gmail.com", 8, "C", "Hajime Isayama")
+CreateStudent("Riya", "riya@gmail.com", 9, "B", "Chester Bennington")
+CreateStudent("Pallavi", "pallavi@gmail.com", 9, "D", "Peter Thiel")
 
-// CreateStudent("Karan", "karan@gmail.com", 9, "D", "Robert Frost")
-// CreateStudent("Shubham", "shubham@gmail.com", 8, "A", "Rabindranath")
-// CreateStudent("Pranshu", "pranshu@gmail.com", 8, "C", "Hajime Isayama")
-// CreateStudent("Pranjal", "pranjal@gmail.com", 9, "B", "Chester Bennington")
-// CreateStudent("Himanshi", "himanshi@gmail.com", 9, "D", "Peter Thiel")
+CreateStudent("Karan", "karan@gmail.com", 9, "D", "Robert Frost")
+CreateStudent("Shubham", "shubham@gmail.com", 8, "A", "Rabindranath")
+CreateStudent("Pranshu", "pranshu@gmail.com", 8, "C", "Hajime Isayama")
+CreateStudent("Pranjal", "pranjal@gmail.com", 9, "B", "Chester Bennington")
+CreateStudent("Himanshi", "himanshi@gmail.com", 9, "D", "Peter Thiel")
 
 
 Router.get("/", (req, res, next) => {
